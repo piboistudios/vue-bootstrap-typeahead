@@ -129,10 +129,6 @@ export default {
                 this.cols.forEach((col, index) => {
                     retList[index] = retVal.filter(entry => col.filter(entry.data));
                 });
-                console.log({
-                    retList,
-                    retVal
-                });
                 return retList;
             } else return retVal;
         }
