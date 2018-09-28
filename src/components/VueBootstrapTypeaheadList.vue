@@ -1,5 +1,6 @@
 <template>
-  <div class="list-group shadow">
+  <div class="list-group shadow bounded-view">
+    <label class="small list-group-item border-bottom-0" v-if="title && title.length > 0" v-text="title"/>
     <vue-bootstrap-typeahead-list-item
       v-for="(item, id) in matchedItems" :key="id"
       :data="item.data"
@@ -7,6 +8,7 @@
       :background-variant="backgroundVariant"
       :text-variant="textVariant"
       @click.native="handleHit(item, $event)"
+      :class="title && title.length > 0 ? 'border-top-0' : ''"
     >
       <template v-if="$scopedSlots.suggestion" slot="suggestion" slot-scope="{ data, htmlText }">
         <slot name="suggestion" v-bind="{ data, htmlText }" />
@@ -16,18 +18,18 @@
 </template>
 
 <script>
-import VueBootstrapTypeaheadListItem from './VueBootstrapTypeaheadListItem.vue'
+import VueBootstrapTypeaheadListItem from "./VueBootstrapTypeaheadListItem.vue";
 
 function sanitize(text) {
-  return text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function escapeRegExp(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 export default {
-  name: 'VueBootstrapTypeaheadList',
+  name: "VueBootstrapTypeaheadList",
 
   components: {
     VueBootstrapTypeaheadListItem
@@ -41,7 +43,7 @@ export default {
     },
     query: {
       type: String,
-      default: ''
+      default: ""
     },
     backgroundVariant: {
       type: String
@@ -56,52 +58,67 @@ export default {
     minMatchingChars: {
       type: Number,
       default: 2
-    }
+    },
+    title: String
   },
 
   computed: {
     highlight() {
-      return (text) => {
-        text = sanitize(text)
+      return text => {
+        text = sanitize(text);
         if (this.query.length === 0) {
-          return text
+          return text;
         }
-        const re = new RegExp(this.escapedQuery, 'gi')
+        const re = new RegExp(this.escapedQuery, "gi");
 
-        return text.replace(re, `<strong>$&</strong>`)
-      }
+        return text.replace(re, `<strong>$&</strong>`);
+      };
     },
 
     escapedQuery() {
-      return escapeRegExp(sanitize(this.query))
+      return escapeRegExp(sanitize(this.query));
     },
 
     matchedItems() {
-      if (this.query.length === 0 || this.query.length < this.minMatchingChars) {
-        return []
+      if (
+        this.query.length === 0 ||
+        this.query.length < this.minMatchingChars
+      ) {
+        return [];
       }
 
-      const re = new RegExp(this.escapedQuery, 'gi')
+      const re = new RegExp(this.escapedQuery, "gi");
 
       // Filter, sort, and concat
       return this.data
         .filter(i => i.text.match(re) !== null)
         .sort((a, b) => {
-          const aIndex = a.text.indexOf(a.text.match(re)[0])
-          const bIndex = b.text.indexOf(b.text.match(re)[0])
+          const aIndex = a.text.indexOf(a.text.match(re)[0]);
+          const bIndex = b.text.indexOf(b.text.match(re)[0]);
 
-          if (aIndex < bIndex) { return -1 }
-          if (aIndex > bIndex) { return 1 }
-          return 0
-        }).slice(0, this.maxMatches)
+          if (aIndex < bIndex) {
+            return -1;
+          }
+          if (aIndex > bIndex) {
+            return 1;
+          }
+          return 0;
+        })
+        .slice(0, this.maxMatches);
     }
   },
 
   methods: {
     handleHit(item, evt) {
-      this.$emit('hit', item)
-      evt.preventDefault()
+      this.$emit("hit", item);
+      evt.preventDefault();
     }
   }
-}
+};
 </script>
+<style>
+.bounded-view {
+  max-height: 30vh;
+  overflow: auto;
+}
+</style>
