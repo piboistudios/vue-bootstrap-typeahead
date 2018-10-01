@@ -21,11 +21,11 @@
 import VueBootstrapTypeaheadListItem from "./VueBootstrapTypeaheadListItem.vue";
 
 function sanitize(text) {
-  return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return text.replace && text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function escapeRegExp(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return str.replace && str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 export default {
@@ -119,6 +119,7 @@ export default {
 <style>
 .bounded-view {
   max-height: 30vh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>
