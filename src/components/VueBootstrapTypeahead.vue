@@ -40,7 +40,7 @@
     </vue-bootstrap-typeahead-list>
     <b-row v-else>
         <b-col class="p-0 z-top" :cols="Math.round(12 / formattedData.filter(list => list.length > 0).length)" v-for="(col, index) in formattedData" :key="index" v-show="col.length > 0">
-            <vue-bootstrap-typeahead-list class="w-100 p-absolute" :title="cols[index].title" :id="`typeahead-input-${index}`" :query="value" :data="col" :background-variant="backgroundVariant" :text-variant="textVariant" v-show="isFocused && col.length > 0" :minMatchingChars="minMatchingChars" @hit="handleHit">
+            <vue-bootstrap-typeahead-list class="w-100 p-absolute mw-196px" :title="cols[index].title" :id="`typeahead-input-${index}`" :query="value" :data="col" :background-variant="backgroundVariant" :text-variant="textVariant" v-show="isFocused && col.length > 0" :minMatchingChars="minMatchingChars" @hit="handleHit">
                 <!-- pass down all scoped slots -->
                 <template v-for="(slot, slotName) in $scopedSlots" :slot="slotName" slot-scope="{ data, htmlText }">
                     <slot :name="slotName" v-bind="{ data, htmlText }"></slot>
@@ -163,7 +163,6 @@ export default {
             (() => {
               const listStyle = list.style;
               listStyle.width = Math.round(rect.width / 2) + "px";
-              listStyle.minWidth = "196px";
             })();
         });
       }
@@ -218,5 +217,8 @@ export default {
 }
 .p-absolute {
   position: absolute;
+}
+.mw-196px {
+  min-width: 196px;
 }
 </style>
