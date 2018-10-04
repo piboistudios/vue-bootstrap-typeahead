@@ -163,6 +163,7 @@ export default {
             (() => {
               const listStyle = list.style;
               listStyle.width = Math.round(rect.width / 2) + "px";
+              listStyle.minWidth = "196px";
             })();
         });
       }

@@ -8,7 +8,7 @@
       :background-variant="backgroundVariant"
       :text-variant="textVariant"
       @click.native="handleHit(item, $event)"
-      :class="title && title.length > 0 ? 'border-top-0' : ''"
+      :class="title && id > 0 && title.length > 0 ? 'border-top-0' : ''"
     >
       <template v-if="$scopedSlots.suggestion" slot="suggestion" slot-scope="{ data, htmlText }">
         <slot name="suggestion" v-bind="{ data, htmlText }" />
